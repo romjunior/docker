@@ -1,0 +1,129 @@
+version: '3.3'
+
+services:
+  gray-mongo:
+    image: mongo:3
+    container_name: gray-mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    ports:
+      - target: 8081
+        published: 8081
+        protocol: tcp
+        mode: host
+      - target: 27017
+        published: 27017
+        protocol: tcp
+        mode: host        
+    networks:
+      - 'outside'
+    volumes:
+      - "<repositório-fisico>:/data/db"
+  elasticsearch:
+    image: elastic:5.6-alpine
+    container_name: gray-elasticsearch
+    environment:
+      - cluster.name=graylog
+      - node.name=elastic-1
+      - http.port=9200
+      - network.host=0.0.0.0
+      - transport.host=localhost
+      - transport.tcp.port=9300
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    volumes:
+      - "<repositório-fisico>:/home/elasticsearch/data"
+    ports:
+      - target: 9200
+        published: 9200
+        protocol: tcp
+        mode: host
+      - target: 9300
+        published: 9300
+        protocol: tcp
+        mode: host        
+    networks:
+      - 'outside'
+  graylog3:
+    image: graylog/graylog:3.0
+    depends_on:
+      - gray-mongo
+      - elasticsearch
+    environment:
+      - GRAYLOG_IS_MASTER=true
+      - MONGO_INITDB_ROOT_PASSWORD=admin
+      - GRAYLOG_PASSWORD_SECRET=Lxvf1KmqQMKPJ5A7grBrBY2d8oLbk5MYS5LtcEkt4UHbaSqKBYfIVjO96CHke0gc7stbt9uQ9rjlOJeaOgwOYhFtMrRy2Hhh
+      - GRAYLOG_ROOT_PASSWORD_SHA2=8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918 #admin
+      - GRAYLOG_HTTP_BIND_ADDRESS=0.0.0.0:9000
+      - GRAYLOG_HTTP_EXTERNAL_URI=http://<ip-host>:9000/
+      - GRAYLOG_ELASTICSEARCH_SHARDS=1
+      - GRAYLOG_ELASTICSEARCH_REPLICAS=0
+      - GRAYLOG_ELASTICSEARCH_HOSTS=http://<ip-host>:9200
+      - GRAYLOG_MONGODB_URI=mongodb://gray:gray@<ip-host-bd>:27017/graylog
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    ports:
+      - target: 9000
+        published: 9000
+        protocol: tcp
+        mode: host
+      - target: 5000
+        published: 5000
+        protocol: tcp
+        mode: host
+      - target: 5001
+        published: 5001
+        protocol: tcp
+        mode: host
+      - target: 5002
+        published: 5002
+        protocol: tcp
+        mode: host
+      - target: 5003
+        published: 5003
+        protocol: tcp
+        mode: host
+      - target: 5004
+        published: 5004
+        protocol: tcp
+        mode: host
+      - target: 5005
+        published: 5005
+        protocol: tcp
+        mode: host
+      - target: 5006
+        published: 5006
+        protocol: tcp
+        mode: host
+      - target: 5007
+        published: 5007
+        protocol: tcp
+        mode: host
+      - target: 5008
+        published: 5008
+        protocol: tcp
+        mode: host 
+      - target: 5009
+        published: 5009
+        protocol: tcp
+        mode: host
+      - target: 5010
+        published: 5010
+        protocol: tcp
+        mode: host        
+    networks:
+      - 'outside'
+
+networks:
+  outside:
+    external:
+      name: 'bridge'

@@ -1,0 +1,23 @@
+FROM ubuntu:16.04
+LABEL author="Romualdo Junior(romualdo.jrr@gmail.com)"
+ENV ADVADDR=192.168.49.167 \
+BINDADDR=0.0.0.0 \
+CLIENTADDR=0.0.0.0 \
+NUMBERCONSUL=1 \
+NODENAME="agent-one" \
+DATADIR="/tmp/consul"
+RUN apt-get update && apt-get -y install wget unzip 
+RUN wget https://releases.hashicorp.com/consul/1.4.0/consul_1.4.0_linux_amd64.zip \
+&& mkdir /home/consul \
+&& unzip consul_1.4.0_linux_amd64.zip -d /home/consul \
+&& rm -f consul_1.4.0_linux_amd64.zip \
+&& mkdir /tmp/consul 
+#&& echo "#! /bin/sh" >> /home/consul/startup.sh \
+#&& echo "consul agent -server -bootstrap-expect=$NUMBERCONSUL -data-dir=$DATADIR -node=$NODENAME --advertise=$ADVADDR --bind=$BINDADDR --client=$CLIENTADDR -ui" >> /home/consul/startup.sh \
+#&& cat /home/consul/startup.sh
+
+
+ENV PATH="/home/consul:${PATH}"
+#ENTRYPOINT ["sh", "/home/consul/startup.sh"]
+CMD consul agent -server -bootstrap-expect=$NUMBERCONSUL -data-dir=$DATADIR -node=$NODENAME --advertise=$ADVADDR --bind=$BINDADDR --client=$CLIENTADDR -ui
+#ENTRYPOINT ["consul", "agent",  "-server",  "-bootstrap-expect=1", "-data-dir=/tmp/consul", "-node=agent-one", "--advertise=192.168.49.142", "--bind=0.0.0.0", "--client=0.0.0.0", "-ui"]
