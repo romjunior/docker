@@ -84,6 +84,7 @@ Dockerfile:
  * Define o que vai dentro do seu container
  * Acessa a recursos como interfaces de rede, discos são virtualizados dentro do ambiente
  * Consegue copiar arquivos da sua máquina ou de fora para dentro da imagem.
+ * Instruções não são case-sensitive(FROM, COPY, ADD...)
 
  Exemplo:
 
@@ -93,3 +94,10 @@ Dockerfile:
  EXPOSE 6379 # expõe a porta -- layer 3
  ENTRYPOINT ["/usr/bin/redis_server"] # comando para iniciar o container -- layer 4
  ```
+
+ **.dockerignore file**: antes do CLI enviar o contexto para o *Daemon*, ele olha uma arquivo chamado `.dockerignore` no diretório atual, se existir o CLI modifica o contexto e exclui os arquivos e diretório que baterem com o padrão. Isso evita enviar coisas desnecessárias ou sensíveis para o *Daemon* e adicionando eles as imagens usando `ADD` e `COPY`
+
+ * ex: */temp\*: */ significa 1 nível do diretório atual e qualquer arquivo de inicie com *temp*.
+ * ex: */\*/temp\*: significa 2 níveis do diretório atual e qualquer arquivo que inicie com *temp*
+ * ex: temp?: qualquer arquivo que inicie com temp mais um caractere: tempa, tempb e etc
+ * ignorar arquivos e ou pastas use ! antes. Ex:!README.md
