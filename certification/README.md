@@ -10,6 +10,8 @@
 
 É um pacote, executável, leve e stand-alone de um software que inclui tudo necessário para a execução do mesmo: Código, runtime, tools, libraries e configurações.
 
+![Definição do Container](https://github.com/romjunior/docker/blob/master/certification/imgs/container-def.png)
+
 #### Eles são:
 
 *  Platform independent
@@ -74,6 +76,8 @@ Ferramentas:
   * Redes 
   * Services 
   * Volumes
+
+![Ciclo de Vida do Container](https://github.com/romjunior/docker/blob/master/certification/imgs/container-lifecycle.png)
 
 Dockerfile:
  
