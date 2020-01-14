@@ -101,3 +101,72 @@ Dockerfile:
  * ex: */\*/temp\*: significa 2 níveis do diretório atual e qualquer arquivo que inicie com *temp*
  * ex: temp?: qualquer arquivo que inicie com temp mais um caractere: tempa, tempb e etc
  * ignorar arquivos e ou pastas use ! antes. Ex:!README.md
+
+ **scape chars**: \ ou `(especialmente no Windows) no dockerfile
+
+ Exemplo:
+
+ ```dockerfile
+ FROM microsoft/nanoserver
+ COPY test.txt C:\\ # vai dar erro por que a segunda barra é de escape, vai juntar a linha debaixo em uma só e vai dar erro no build
+ RUN dir C:\
+ ```
+
+ Como resolver:
+
+ ```
+ # escape=`   # só definir o padrão do escape
+ FROM microsoft/nanoserver
+ COPY test.txt C:\
+ RUN dir C:\
+ ```
+
+ #### Construindo a primeira imagem
+
+ ```dockerfile
+ FROM ubuntu #baseimage
+ LABEL maintainer junior # metadados key=value
+ ADD https://arquivo.txt  /tmp/teste.txt #faz o download e adiciona o arquivo no /tmp do sistema de arquivos do container
+ RUN ["bash"] # executa o comando bash
+ ```
+
+Para construir a imagem pode usar
+
+ ```
+ docker build -f dockerfile -t imagem:[tag] .
+ ```
+
+ * `build`: comando para construir uma imagem a partir de um dockerfile
+ * `-f`: especificar o arquivo, se for omitida vai procurar um arquivo chamado `dockerfile` no diretório especificado
+ * `-t`: dar nome e opcionalmente uma tag(padrão `latest`) para uma imagem
+ * `.`: pode dar um caminho para o docker construir a imagem e os parametros seguirão dessa localização
+
+Para verificar se a imagem foi criado, executar
+
+ ```
+ docker images
+ ```
+
+Para executar o container a partir de uma imagem use o seguinte comando:
+
+```
+docker run -it -d --name nome-do-container nome-da-imagem
+```
+
+* `-it`: modo interativo
+* `-d`: desacoplado do terminal
+*  `--name`: especifica um nome para o container, senão recebe um padrão(TODO: ver padrão)
+
+Para verificar se o container est[a executando use o seguinte comando:
+
+```
+docker ps|container -a
+```
+
+* `-a`: serve para mostrar todos os container, não só em execução
+
+Podemos acoplar ao nosso container usando:
+
+```
+docker attach container-name
+```
