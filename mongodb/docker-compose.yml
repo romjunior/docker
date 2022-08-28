@@ -1,0 +1,19 @@
+version: "3.7"
+services:
+  mongo:
+    image: mongo:5.0.11
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+    ports:
+      - 27017:27017
+    volumes:
+      - /data/db/mongodb:/data/db
+    deploy:
+      resources:
+        limits:
+          cpus: 0.80
+          memory: 512M
+        reservations:
+          cpus: 0.40
+          memory: 256M
