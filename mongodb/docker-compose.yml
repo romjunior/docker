@@ -5,7 +5,7 @@ volumes:
     name: mongo-volume
     driver_opts:
       type: "local"
-      device: ":/data/db/mongodb"
+      device: "/data/db/mongodb"
 
 services:
   mongo:
