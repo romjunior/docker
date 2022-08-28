@@ -3,7 +3,6 @@ version: "3.7"
 volumes:
   mongo:
     name: mongo-volume
-    external: true
     driver_opts:
       type: "local"
       device: ":/data/db/mongodb"
