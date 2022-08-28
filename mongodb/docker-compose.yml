@@ -5,7 +5,7 @@ volumes:
     name: mongo-volume
     driver_opts:
       type: "local"
-      device: "/data/db/mongodb"
+      device: "/data/db/mongodb:/data/db"
 
 services:
   mongo:
@@ -16,7 +16,7 @@ services:
     ports:
       - 27017:27017
     volumes:
-      - mongo:/data/db
+      - mongo
     deploy:
       resources:
         limits:
